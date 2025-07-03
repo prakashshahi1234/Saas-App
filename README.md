@@ -110,7 +110,7 @@ cd saas-app
 
 ### 2. Environment Setup
 The application uses environment variables configured in `docker-compose.yml`:
-
+#note for local  env are hardcoded into the compose file.
 ```yaml
 # Frontend Environment Variables
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
