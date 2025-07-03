@@ -1,0 +1,89 @@
+version: '3.8'
+
+services:
+  # MongoDB Service
+  mongodb:
+    image: mongo:6.0
+    container_name: task-manager-mongodb
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    networks:
+      - task-manager-network
+    restart: unless-stopped
+
+  # Backend API Service
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: task-manager-backend
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=development
+      - PORT=5000
+      - MONGODB_URI=mongodb://mongodb:27017/saas-app
+      # Stripe Configuration
+      - STRIPE_SECRET_KEY=sk_test_51RUpeJIrxZd9F7Ib6cmTSZ2ztDEtDfkXsRsgRYP3OZdQs1kO4XNzF2RiWfxKEzRYLNRQuKe9c3JolUQTc3Phvq8J00LzttztvW
+      - STRIPE_WEBHOOK_SECRET=whsec_your_webhook_secret_here
+    volumes:
+      - ./backend:/app
+      - /app/node_modules
+    networks:
+      - task-manager-network
+    restart: unless-stopped
+    depends_on:
+      - mongodb
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:5000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+  # Frontend Next.js Service
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        # Stripe Configuration
+        - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_51RUpeJIrxZd9F7IbymqMr72k545w9oCqZgmabX2eCriAvRj29eHlIpr7o1BGucVt7ub4L6ZISykb7DMJpfrxXewG002qG09aJ0
+        # API Configuration
+        - NEXT_PUBLIC_API_URL=http://localhost:5000
+    container_name: task-manager-frontend
+    ports:
+      - "3000:3000"
+          environment:
+        # Stripe Configuration
+        - NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_51RUpeJIrxZd9F7IbymqMr72k545w9oCqZgmabX2eCriAvRj29eHlIpr7o1BGucVt7ub4L6ZISykb7DMJpfrxXewG002qG09aJ0
+      # API Configuration
+      - NEXT_PUBLIC_API_URL=http://localhost:5000
+    volumes:
+      - ./frontend:/app
+      - /app/node_modules
+      - /app/.next
+    networks:
+      - task-manager-network
+    restart: unless-stopped
+    depends_on:
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "wget", "--no-verbose", "--tries=1", "--spider", "http://localhost:3000"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+networks:
+  task-manager-network:
+    driver: bridge
+
+volumes:
+  node_modules_backend:
+  node_modules_frontend:
+  next_cache:
+  mongodb_data: 
