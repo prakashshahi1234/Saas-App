@@ -336,15 +336,6 @@ MONGODB_URI=mongodb://production-db-url
 ## 📝 License
 
 This project is licensed under the MIT License.
-
-## 👨‍💻 Author
-
-**Fullstack Engineer Assignment**
-- **Technologies**: Next.js, Node.js, TypeScript, MongoDB, Stripe, Firebase
-- **Architecture**: Microservices with Docker containerization
-- **Features**: Complete SaaS platform with payment processing
-- **Best Practices**: Modern development practices and security standards
-
 ---
 
 **This project demonstrates proficiency in:**
