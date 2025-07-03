@@ -1,10 +1,18 @@
+"use client"
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+
 export default function Home() {
+  const router = useRouter();
+
+  useEffect(() => {
+    router.push("/dashboard");
+  }, []);
+
   return (
     <div className="container mx-auto py-8">
-      <h1 className="text-3xl font-bold mb-6">Welcome to Orderlay Back Office</h1>
-      <p className="text-muted-foreground">
-        This is the main dashboard page. You can add your main content here.
-      </p>
+      
     </div>
   );
 }
