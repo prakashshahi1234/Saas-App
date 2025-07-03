@@ -75,24 +75,67 @@ A full-stack SaaS application for project management with integrated payment pro
 
 ```
 saas-app/
-├── frontend/                 # Next.js frontend application
-│   ├── app/                 # App Router pages
-│   │   ├── components/          # Reusable UI components
-│   │   ├── models/             # MobX State Tree models
-│   │   ├── lib/                # Utilities and configurations
-│   │   ├── hooks/              # Custom React hooks
-│   │   └── Dockerfile          # Frontend container
-│   ├── backend/                # Express.js backend API
-│   │   ├── src/
-│   │   │   ├── controllers/    # Route controllers
-│   │   │   ├── models/         # Mongoose models
-│   │   │   ├── routes/         # API routes
-│   │   │   ├── services/       # Business logic
-│   │   │   ├── middleware/     # Custom middleware
-│   │   │   └── config/         # Configuration files
-│   │   └── Dockerfile          # Backend container
-│   ├── docker-compose.yml      # Multi-container setup
-│   └── README.md              # This file
+├── frontend/                          # Next.js 15 frontend application
+│   ├── app/                          # App Router pages and layouts
+│   │   ├── auth/                     # Authentication pages
+│   │   ├── dashboard/                # Dashboard pages
+│   │   │   ├── analytics/            # Analytics dashboard
+│   │   │   ├── payments/             # Payment management
+│   │   │   └── projects/             # Project management
+│   │   ├── verify-email/             # Email verification
+│   │   ├── globals.css               # Global styles
+│   │   ├── layout.tsx                # Root layout
+│   │   └── page.tsx                  # Home page
+│   ├── components/                   # Reusable UI components
+│   │   ├── auth/                     # Authentication components
+│   │   ├── layout/                   # Layout components
+│   │   ├── payments/                 # Payment components
+│   │   ├── projects/                 # Project components
+│   │   ├── providers/                # Context providers
+│   │   └── ui/                       # Base UI components
+│   ├── hooks/                        # Custom React hooks
+│   ├── lib/                          # Utilities and configurations
+│   │   ├── api/                      # API configuration
+│   │   ├── firebase.ts               # Firebase configuration
+│   │   ├── utils.ts                  # Utility functions
+│   │   └── validations/              # Form validations
+│   ├── models/                       # MobX State Tree models
+│   ├── public/                       # Static assets
+│   ├── Dockerfile                    # Frontend container
+│   ├── package.json                  # Frontend dependencies
+│   └── tsconfig.json                 # TypeScript config
+├── backend/                          # Express.js backend API
+│   ├── src/
+│   │   ├── config/                   # Configuration files
+│   │   │   ├── app.ts                # App configuration
+│   │   │   └── database.ts           # Database configuration
+│   │   ├── controllers/              # Route controllers
+│   │   │   ├── paymentController.ts  # Payment logic
+│   │   │   ├── projectController.ts  # Project logic
+│   │   │   └── quoteController.ts    # Quote API logic
+│   │   ├── middleware/               # Custom middleware
+│   │   │   ├── errorHandler.ts       # Error handling
+│   │   │   └── index.ts              # Middleware exports
+│   │   ├── models/                   # Mongoose models
+│   │   │   ├── Project.ts            # Project schema
+│   │   │   └── UserBalance.ts        # User balance schema
+│   │   ├── routes/                   # API routes
+│   │   │   ├── index.ts              # Route aggregator
+│   │   │   ├── paymentRoutes.ts      # Payment endpoints
+│   │   │   ├── projectRoutes.ts      # Project endpoints
+│   │   │   └── quoteRoutes.ts        # Quote endpoints
+│   │   ├── services/                 # Business logic
+│   │   │   ├── paymentService.ts     # Payment processing
+│   │   │   └── projectService.ts     # Project management
+│   │   ├── utils/                    # Utility functions
+│   │   │   └── gracefulShutdown.ts   # Graceful shutdown
+│   │   └── server.ts                 # Main server file
+│   ├── Dockerfile                    # Backend container
+│   ├── package.json                  # Backend dependencies
+│   └── tsconfig.json                 # TypeScript config
+├── docker-compose.yml                # Multi-container orchestration
+├── DOCKER_README.md                  # Docker setup guide
+└── README.md                         # Project documentation
 ```
 
 ## 🚀 Quick Start
@@ -110,7 +153,8 @@ cd saas-app
 
 ### 2. Environment Setup
 The application uses environment variables configured in `docker-compose.yml`:
-#note for local  env are hardcoded into the compose file.
+
+> **⚠️ Note for Local Development**: Environment variables are hardcoded into the docker-compose.yml file for local development convenience.
 ```yaml
 # Frontend Environment Variables
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=your_stripe_publishable_key
@@ -312,3 +356,18 @@ This project is licensed under the MIT License.
 - Containerization and DevOps practices
 - Security implementation and best practices
 - Real-time data handling and state management
+
+## 🚀 Future Improvements
+
+### 🔧 Technical Enhancements
+- **Enhanced Webhook Integration**: Improve Stripe webhook handling for better payment processing reliability
+- **Better Data Structure**: Optimize database schema and API response structures for improved performance
+- **Advanced Error Handling**: Implement comprehensive error tracking and user feedback systems
+
+### 🎨 UI/UX Improvements
+- **More Responsive Design**: Enhanced mobile-first responsive design with better breakpoints
+- **Appealing UI**: Modern design system with improved visual hierarchy and user experience
+- **Interactive Components**: Enhanced animations, loading states, and micro-interactions
+- **Accessibility**: WCAG compliance and better screen reader support
+
+
